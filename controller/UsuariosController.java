@@ -50,10 +50,10 @@ public class UsuariosController {
 	         d2 = d2 + ( 12 - nCount ) * digitoCPF;
 	      };
 
-	      //Primeiro resto da divisão por 11.
+	      //Primeiro resto da divisï¿½o por 11.
 	      resto = (d1 % 11);
 
-	      //Se o resultado for 0 ou 1 o digito é 0 caso contrário o digito é 11 menos o resultado anterior.
+	      //Se o resultado for 0 ou 1 o digito ï¿½ 0 caso contrï¿½rio o digito ï¿½ 11 menos o resultado anterior.
 	      if (resto < 2)
 	         digito1 = 0;
 	      else
@@ -61,16 +61,16 @@ public class UsuariosController {
 
 	      d2 += 2 * digito1;
 
-	      //Segundo resto da divisão por 11.
+	      //Segundo resto da divisï¿½o por 11.
 	      resto = (d2 % 11);
 
-	      //Se o resultado for 0 ou 1 o digito é 0 caso contrário o digito é 11 menos o resultado anterior.
+	      //Se o resultado for 0 ou 1 o digito ï¿½ 0 caso contrï¿½rio o digito ï¿½ 11 menos o resultado anterior.
 	      if (resto < 2)
 	         digito2 = 0;
 	      else
 	         digito2 = 11 - resto;
 
-	      //Digito verificador do CPF que está sendo validado.
+	      //Digito verificador do CPF que estï¿½ sendo validado.
 	      String nDigVerific = strCpf.substring (strCpf.length()-2, strCpf.length());
 
 	      //Concatenando o primeiro resto com o segundo.
@@ -123,6 +123,7 @@ public class UsuariosController {
 		validator.onErrorUsePageOf(UsuariosController.class).formulario();
 		
 		dao.create(usuario);
+		LogController.logar("usuario " + usuario.getLogin() + " inserido");
 		result.redirectTo(this).lista();
 	}
 	
@@ -136,6 +137,7 @@ public class UsuariosController {
 	@Put
 	public void altera(Usuario usuario) {
 		dao.update(usuario);
+		LogController.logar("usuario " + usuario.getLogin() + " alterado");
 		result.redirectTo(this).lista();
 	}
 	
@@ -144,6 +146,7 @@ public class UsuariosController {
 	public void remove(String login){
 		Usuario usuario = dao.load(login);
 		dao.delete(usuario);
+		LogController.logar("usuario " + usuario.getLogin() + " removido");
 		result.redirectTo(UsuariosController.class).lista();
 	}
 

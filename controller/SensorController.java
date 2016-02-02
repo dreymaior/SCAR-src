@@ -26,6 +26,7 @@ public class SensorController {
 	@Post @Path("/sensor")
 	public void adiciona(Sensor sensor) {
 		dao.create(sensor);
+		LogController.logar("sensor " + sensor.getId() + " inserido");
 		result.redirectTo(this).lista();
 	}
 	
@@ -37,6 +38,7 @@ public class SensorController {
 	@Put @Path("/sensor/{sensor.id}")
 	public void altera(Sensor sensor){
 		dao.update(sensor);
+		LogController.logar("sensor " + sensor.getId() + " atualizado");
 		result.redirectTo(this).lista();
 	}
 	
@@ -44,6 +46,7 @@ public class SensorController {
 	public void remove(Long id) {
 		Sensor sensor = dao.load(id);
 		dao.delete(sensor);
+		LogController.logar("sensor " + sensor.getId() + " removido");
 		result.redirectTo(this).lista();
 	}
 	
