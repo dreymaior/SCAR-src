@@ -36,7 +36,7 @@ public class SensoresController {
 		return dao.load(id);
 	}
 	
-	@Put @Path("/sensor/{sensores.id}")
+	@Put @Path("/admin/sensores/{sensores.id}")
 	public void altera(Sensores sensor){
 		dao.update(sensor);
 		LogController.logar("sensor " + sensor.getId() + " atualizado");
