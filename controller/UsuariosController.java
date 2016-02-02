@@ -18,15 +18,18 @@ import modelo.Usuario;
 @Resource
 public class UsuariosController {
 	
+	private final UsuariosWebController usuarioWeb;
+	
 	private UsuarioDao dao;
 	private Result result;
 	private Validator validator;
 	
 	
-	public UsuariosController(UsuarioDao dao, Result result, Validator validator) {
+	public UsuariosController(UsuarioDao dao, Result result, Validator validator, UsuariosWebController usuarioWeb) {
 		this.dao = dao;
 		this.result = result;
 		this.validator = validator;
+		this.usuarioWeb = usuarioWeb;
 	}
 	
 	static public boolean isValidCpf (String strCpf )
@@ -122,8 +125,15 @@ public class UsuariosController {
 		
 		validator.onErrorUsePageOf(UsuariosController.class).formulario();
 		
+		if (dao.existeUsuario(usuario)){
+			validator.add(new ValidationMessage("Login já existe", "usuario.login"));
+		}
+		
+		validator.onErrorUsePageOf(UsuariosController.class).formulario();
+		
 		dao.create(usuario);
-		LogController.logar("usuario " + usuario.getLogin() + " inserido");
+		LogController.logar("usuario " + usuario.getLogin() + " inserido");		
+		
 		result.redirectTo(this).lista();
 	}
 	
@@ -159,6 +169,27 @@ public class UsuariosController {
 	@Path("/usuarios/novo/usuario")
 	@Get
 	public void formulario(){
+	}
+	
+	@Path("/login")
+	@Get
+	public void login(){
+	}	
+	
+	@Path("/login")
+	@Post
+	public void login(Usuario usuario){
+		Usuario carregado = dao.carrega(usuario);
+		if (carregado == null) {
+			validator.add(new ValidationMessage("Login e/ou senha inválidos", "usuario.login"));
+		}
+		validator.onErrorUsePageOf(UsuariosController.class).login();
+	}
+	
+	@Path("/logout")
+	public void logout() {
+		usuarioWeb.logout();
+		result.redirectTo(Listener.class).index();
 	}
 	
 }
