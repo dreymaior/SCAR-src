@@ -52,5 +52,12 @@ public class UsuarioDao {
 	public List<Usuario> listaTudo() {
 		return this.session.createCriteria(Usuario.class).list();
 	}
+	
+	public Usuario carrega(Usuario usuario){
+		return (Usuario) session.createCriteria(Usuario.class)
+				.add(Restrictions.eq("login", usuario.getLogin()))
+				.add(Restrictions.eq("password", usuario.getPassword()))
+				.uniqueResult();
+	}
 
 }
